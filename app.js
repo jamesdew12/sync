@@ -1,13 +1,15 @@
 const Joi = require('joi');
 const express = require('express');
 const app = express();
+const crypto2 = require('crypto2');
+
 
 app.use(express.json());
 
 const persons = [
-  { id: 1, name: 'Jon'},
-  { id: 2, name: 'Stannis'},
-  { id: 3, name: 'Ned'},
+  { id: 1, name: 'Jon12'},
+  { id: 2, name: 'Stannis43'},
+  { id: 3, name: 'Ned50'},
 
 ];
 
@@ -45,12 +47,12 @@ app.put('/persons/:id', (req, res) => {
 
 });
 
-function ValidatePerson(person){
-  const schema = {
-    name: Joi.string().min(2).required()
-  };
+async function ValidatePerson(person){
+  var letterNumber = /^[0-9a-zA-Z]+$/;
+  const schema = {name: Joi.string().value.match(letterNumber).required()};
   return Joi.validate(person, schema);
-}
+};
+
 
 app.get('/persons/:id', (req, res) => {
   const person = persons.find(c => c.id === parseInt(req.params.id));
